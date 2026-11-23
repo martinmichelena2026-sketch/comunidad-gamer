@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comunidad Gamer</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+ background:#090d18;color:#fff;
+ font-family:Arial,sans-serif;
+ padding-bottom:85px;
+}
+header{
+ padding:22px 18px 16px;
+ display:flex;justify-content:space-between;
+ align-items:center;
+ background:#10182a;
+ border-bottom:1px solid #202c43;
+}
+.logo{font-size:20px;font-weight:900;color:#5ce1ff}
+.logo span{color:#a879ff}
+.coins{
+ background:#202b40;padding:10px 14px;
+ border-radius:20px;color:#ffd75e;font-weight:bold;
+}
+main{padding:18px;max-width:600px;margin:auto}
+.page{display:none}
+.page.active{display:block}
+.welcome{
+ background:linear-gradient(135deg,#172c55,#39215e);
+ padding:22px;border-radius:20px;
+ margin-bottom:20px;
+ border:1px solid #425b9b;
+}
+.welcome h2{font-size:23px;margin-bottom:8px}
+.welcome p{color:#c4d4f5;font-size:13px}
+.section-title{font-size:19px;margin:23px 0 13px}
+.profile{
+ display:flex;align-items:center;gap:14px;
+ background:#151e30;padding:17px;
+ border-radius:17px;margin-bottom:18px;
+}
+.avatar{
+ width:55px;height:55px;border-radius:16px;
+ background:linear-gradient(135deg,#21d4fd,#a879ff);
+ display:grid;place-items:center;font-size:28px;
+}
+.card{
+ background:#151e30;border:1px solid #26344d;
+ padding:17px;border-radius:17px;margin-bottom:12px;
+}
+.card h3{font-size:16px;margin-bottom:7px}
+.card p{font-size:13px;color:#aab8d0;line-height:1.5}
+.grid{
+ display:grid;grid-template-columns:1fr 1fr;gap:12px;
+}
+.stat{text-align:center;padding:18px 8px}
+.stat strong{display:block;font-size:22px;color:#5ce1ff;margin-bottom:5px}
+.stat span{font-size:12px;color:#aab8d0}
+button{
+ border:0;cursor:pointer;font-weight:bold;
+ border-radius:11px;padding:11px 15px;
+ background:linear-gradient(90deg,#28c7ed,#8262ff);
+ color:white;margin-top:12px;
+}
+button:disabled{opacity:.5}
+.task{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.reward{color:#ffd75e;font-size:13px;font-weight:bold}
+.task button{white-space:nowrap;font-size:12px}
+nav{
+ position:fixed;bottom:0;left:0;right:0;
+ background:#111a2b;border-top:1px solid #28344b;
+ display:flex;justify-content:space-around;
+ padding:12px 3px calc(12px + env(safe-area-inset-bottom));
+ z-index:10;
+}
+nav button{
+ background:transparent;color:#8292ae;
+ margin:0;padding:5px 3px;font-size:11px;
+ display:flex;flex-direction:column;gap:5px;
+ align-items:center;
+}
+nav button.active{color:#5ce1ff}
+nav b{font-size:20px}
+input{
+ width:100%;padding:13px;border-radius:10px;
+ border:1px solid #35445f;background:#0d1525;
+ color:white;margin-top:12px;
+}
+.muted{color:#9cabc4;font-size:13px}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="logo">COMUNIDAD <span>GAMER</span></div>
+ <div class="coins">🪙 <span id="coins">100</span></div>
+</header>
+
+<main>
+
+<section class="page active" id="inicio">
+ <div class="welcome">
+  <h2>¡Bienvenido, jugador! 🎮</h2>
+  <p>Tu comunidad, tus desafíos y tus recompensas.</p>
+ </div>
+
+ <div class="profile">
+  <div class="avatar">👾</div>
+  <div>
+   <h3 id="playerName">Jugador</h3>
+   <p class="muted">Miembro de la comunidad</p>
+  </div>
+ </div>
+
+ <h3 class="section-title">Tu actividad</h3>
+ <div class="grid">
+  <div class="card stat">
+   <strong id="statCoins">100</strong>
+   <span>Fichas disponibles</span>
+  </div>
+  <div class="card stat">
+   <strong>1</strong>
+   <span>Nivel actual</span>
+  </div>
+ </div>
+
+ <h3 class="section-title">Explorá la comunidad</h3>
+ <div class="card">
+  <h3>🏆 Misiones diarias</h3>
+  <p>Completá actividades y ganá fichas.</p>
+  <button onclick="showPage('misiones')">Ver misiones</button>
+ </div>
+ <div class="card">
+  <h3>👥 Comunidad gamer</h3>
+  <p>Conocé jugadores y participá en actividades.</p>
+  <button onclick="showPage('comunidad')">Entrar</button>
+ </div>
+</section>
+
+<section class="page" id="misiones">
+ <h2>🎯 Misiones</h2>
+ <p class="muted" style="margin-top:8px">Completá desafíos y conseguí fichas.</p>
+
+ <h3 class="section-title">Actividades disponibles</h3>
+
+ <div class="card task">
+  <div>
+   <h3>🎮 Visitar la comunidad</h3>
+   <p>Explorá nuestra sección comunitaria.</p>
+   <div class="reward">+20 fichas</div>
+  </div>
+  <button onclick="claim(this,20)">Reclamar</button>
+ </div>
+
+ <div class="card task">
+  <div>
+   <h3>👤 Completar perfil</h3>
+   <p>Configurá tu nombre de jugador.</p>
+   <div class="reward">+30 fichas</div>
+  </div>
+  <button onclick="claim(this,30)">Reclamar</button>
+ </div>
+
+ <div class="card task">
+  <div>
+   <h3>🌟 Explorar misiones</h3>
+   <p>Conocé las actividades disponibles.</p>
+   <div class="reward">+10 fichas</div>
+  </div>
+  <button onclick="claim(this,10)">Reclamar</button>
+ </div>
+</section>
+
+<section class="page" id="comunidad">
+ <h2>👥 Comunidad</h2>
+ <p class="muted" style="margin-top:8px">Un espacio para los jugadores.</p>
+
+ <h3 class="section-title">Zona gamer</h3>
+ <div class="card">
+  <h3>🔥 Free Fire</h3>
+  <p>Encontrá jugadores, compartí partidas y organizá equipos.</p>
+  <button onclick="alert('Próximamente: zona de Free Fire')">Explorar</button>
+ </div>
+ <div class="card">
+  <h3>🏆 Torneos</h3>
+  <p>Próximamente podrás participar en competencias.</p>
+ </div>
+ <div class="card">
+  <h3>💬 Chat comunitario</h3>
+  <p>Un espacio para conversar con otros miembros.</p>
+ </div>
+</section>
+
+<section class="page" id="referidos">
+ <h2>🤝 Invitá amigos</h2>
+ <div class="card" style="margin-top:20px">
+  <h3>¡Crezcamos juntos!</h3>
+  <p>Invitá a tus amigos a unirse a la comunidad.</p>
+  <div class="reward" style="margin-top:15px">Recompensa de demostración: 50 fichas</div>
+  <button onclick="alert('El sistema de invitaciones se conectará con Telegram próximamente')">Invitar amigos</button>
+ </div>
+</section>
+
+<section class="page" id="premios">
+ <h2>🎁 Recompensas</h2>
+ <p class="muted" style="margin-top:8px">Utilizá tus fichas para canjear premios.</p>
+
+ <div class="card" style="margin-top:20px">
+  <h3>🎮 Premio gamer</h3>
+  <p>Un premio de demostración.</p>
+  <div class="reward">500 fichas</div>
+  <button onclick="redeem(500,'Premio gamer')">Canjear</button>
+ </div>
+
+ <div class="card">
+  <h3>💎 Premio especial</h3>
+  <p>Una recompensa especial de la comunidad.</p>
+  <div class="reward">1000 fichas</div>
+  <button onclick="redeem(1000,'Premio especial')">Canjear</button>
+ </div>
+ <p class="muted">Los canjes son demostrativos. Los premios reales se habilitarán cuando configuremos el sistema.</p>
+</section>
+
+<section class="page" id="perfil">
+ <h2>👤 Mi perfil</h2>
+ <div class="card" style="margin-top:20px">
+  <div class="avatar">👾</div>
+  <h3 style="margin-top:12px" id="profileName">Jugador</h3>
+  <p class="muted">Miembro de Comunidad Gamer</p>
+  <input id="nameInput" placeholder="Tu nombre de jugador">
+  <button onclick="saveName()">Guardar nombre</button>
+ </div>
+ <div class="card">
+  <h3>🪙 Mi saldo</h3>
+  <div class="reward" id="profileCoins">100 fichas</div>
+ </div>
+</section>
+
+</main>
+
+<nav>
+ <button class="active" onclick="showPage('inicio',this)"><b>⌂</b>Inicio</button>
+ <button onclick="showPage('misiones',this)"><b>🎯</b>Misiones</button>
+ <button onclick="showPage('comunidad',this)"><b>👥</b>Comunidad</button>
+ <button onclick="showPage('referidos',this)"><b>🤝</b>Referidos</button>
+ <button onclick="showPage('premios',this)"><b>🎁</b>Premios</button>
+ <button onclick="showPage('perfil',this)"><b>👤</b>Perfil</button>
+</nav>
+
+<script>
+let balance = 100;
+
+function updateBalance(){
+ document.getElementById('coins').textContent=balance;
+ document.getElementById('statCoins').textContent=balance;
+ document.getElementById('profileCoins').textContent=balance+' fichas';
+}
+
+function showPage(id,btn){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+ if(btn) btn.classList.add('active');
+ else {
+  const names=['inicio','misiones','comunidad','referidos','premios','perfil'];
+  const buttons=document.querySelectorAll('nav button');
+  buttons[names.indexOf(id)]?.classList.add('active');
+ }
+ window.scrollTo(0,0);
+}
+
+function claim(btn,amount){
+ if(btn.disabled)return;
+ balance+=amount;
+ btn.disabled=true;
+ btn.textContent='Completada ✓';
+ updateBalance();
+}
+
+function redeem(amount,name){
+ if(balance<amount){
+  alert('No tenés suficientes fichas.');
+  return;
+ }
+ if(confirm('¿Querés canjear '+amount+' fichas por '+name+'?')){
+  balance-=amount;
+  updateBalance();
+  alert('Canje de demostración realizado.');
+ }
+}
+
+function saveName(){
+ const name=document.getElementById('nameInput').value.trim();
+ if(!name)return alert('Escribí un nombre.');
+ document.getElementById('playerName').textContent=name;
+ document.getElementById('profileName').textContent=name;
+ alert('Nombre actualizado en esta demostración.');
+}
+
+const tg=window.Telegram?.WebApp;
+if(tg){
+ tg.ready();
+ tg.expand();
+ if(tg.initDataUnsafe?.user){
+  const user=tg.initDataUnsafe.user;
+  const name=user.first_name||'Jugador';
+  document.getElementById('playerName').textContent=name;
+  document.getElementById('profileName').textContent=name;
+ }
+}
+updateBalance();
+</script>
+
+</body>
+</html>

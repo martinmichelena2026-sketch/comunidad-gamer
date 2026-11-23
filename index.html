@@ -3,317 +3,395 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090e1c">
 <title>Comunidad Gamer</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
+:root{
+ --bg:#090e1c;--panel:#141d30;--panel2:#1b2940;
+ --blue:#42d5ff;--purple:#9565ff;--gold:#ffd46a;
+ --muted:#9aabc5;--line:#283751;--green:#55dfa5;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 body{
- background:#090d18;color:#fff;
- font-family:Arial,sans-serif;
- padding-bottom:85px;
+ background:var(--bg);color:#fff;
+ font-family:Arial,sans-serif;padding-bottom:90px;
 }
 header{
- padding:22px 18px 16px;
- display:flex;justify-content:space-between;
- align-items:center;
- background:#10182a;
- border-bottom:1px solid #202c43;
+ padding:17px;display:flex;align-items:center;
+ justify-content:space-between;background:#111a2c;
+ border-bottom:1px solid var(--line);
+ position:sticky;top:0;z-index:5;
 }
-.logo{font-size:20px;font-weight:900;color:#5ce1ff}
-.logo span{color:#a879ff}
-.coins{
- background:#202b40;padding:10px 14px;
- border-radius:20px;color:#ffd75e;font-weight:bold;
+.brand{font-size:17px;font-weight:900;letter-spacing:.5px}
+.brand span{color:var(--blue)}
+.balance{
+ background:#26334b;padding:10px 13px;
+ border-radius:20px;color:var(--gold);
+ font-size:13px;font-weight:bold;
 }
-main{padding:18px;max-width:600px;margin:auto}
+main{max-width:600px;margin:auto;padding:17px}
 .page{display:none}
 .page.active{display:block}
-.welcome{
- background:linear-gradient(135deg,#172c55,#39215e);
- padding:22px;border-radius:20px;
- margin-bottom:20px;
- border:1px solid #425b9b;
+.hero{
+ padding:22px;border-radius:20px;margin-bottom:17px;
+ background:linear-gradient(135deg,#17365d,#38245d);
+ border:1px solid #465b94;position:relative;overflow:hidden;
 }
-.welcome h2{font-size:23px;margin-bottom:8px}
-.welcome p{color:#c4d4f5;font-size:13px}
-.section-title{font-size:19px;margin:23px 0 13px}
-.profile{
- display:flex;align-items:center;gap:14px;
- background:#151e30;padding:17px;
- border-radius:17px;margin-bottom:18px;
+.hero:after{
+ content:"🎮";position:absolute;right:15px;top:23px;
+ font-size:57px;opacity:.25;
 }
-.avatar{
- width:55px;height:55px;border-radius:16px;
- background:linear-gradient(135deg,#21d4fd,#a879ff);
- display:grid;place-items:center;font-size:28px;
+.eyebrow{font-size:11px;color:#a9dfff;letter-spacing:2px}
+.hero h1{font-size:24px;margin:10px 0}
+.hero p{font-size:13px;color:#c2d2ed;max-width:75%;line-height:1.5}
+.panel{
+ background:var(--panel);border:1px solid var(--line);
+ padding:16px;border-radius:17px;margin-bottom:13px;
 }
-.card{
- background:#151e30;border:1px solid #26344d;
- padding:17px;border-radius:17px;margin-bottom:12px;
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+h2{font-size:21px;margin-bottom:7px}
+h3{font-size:15px}
+.muted{color:var(--muted);font-size:12px;line-height:1.5}
+.section{font-size:17px;margin:22px 0 12px}
+.levelbox{
+ background:linear-gradient(110deg,#202e50,#282044);
+ border:1px solid #46527d;border-radius:17px;padding:16px;
 }
-.card h3{font-size:16px;margin-bottom:7px}
-.card p{font-size:13px;color:#aab8d0;line-height:1.5}
-.grid{
- display:grid;grid-template-columns:1fr 1fr;gap:12px;
+.level-icon{
+ width:53px;height:53px;border-radius:15px;
+ background:linear-gradient(135deg,#3dc9fa,#9164ff);
+ display:grid;place-items:center;font-size:26px;
 }
-.stat{text-align:center;padding:18px 8px}
-.stat strong{display:block;font-size:22px;color:#5ce1ff;margin-bottom:5px}
-.stat span{font-size:12px;color:#aab8d0}
+.progress{height:9px;background:#34415a;border-radius:20px;overflow:hidden;margin:12px 0 7px}
+.progress div{height:100%;width:35%;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:20px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.stat{background:#19263b;padding:14px;border-radius:14px}
+.stat strong{display:block;font-size:23px;color:var(--blue);margin-bottom:5px}
+.stat span{font-size:11px;color:var(--muted)}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:23px 0 12px}
+.section-head h3{font-size:17px}
+.tag{font-size:10px;border-radius:20px;padding:6px 9px;background:#243c51;color:var(--blue)}
+.task{display:flex;align-items:center;gap:12px}
+.task-icon{
+ width:43px;height:43px;flex-shrink:0;border-radius:13px;
+ display:grid;place-items:center;font-size:21px;background:#24334c;
+}
+.task-info{flex:1;min-width:0}
+.task-info h3{margin-bottom:5px}
+.reward{font-size:12px;color:var(--gold);font-weight:bold;margin-top:6px}
 button{
- border:0;cursor:pointer;font-weight:bold;
- border-radius:11px;padding:11px 15px;
- background:linear-gradient(90deg,#28c7ed,#8262ff);
- color:white;margin-top:12px;
+ border:0;border-radius:10px;padding:11px 13px;
+ background:linear-gradient(100deg,#29c8ed,#8161ff);
+ color:white;font-weight:bold;font-size:12px;cursor:pointer;
 }
-button:disabled{opacity:.5}
-.task{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.reward{color:#ffd75e;font-size:13px;font-weight:bold}
-.task button{white-space:nowrap;font-size:12px}
+button:disabled{opacity:.45;cursor:default}
+.secondary{background:#273750;color:#c7d8f3}
+.small{padding:8px 10px}
+.tabs{display:flex;gap:8px;overflow:auto;margin:15px 0}
+.tabs button{white-space:nowrap;background:#1a2940;color:#9eafc9}
+.tabs button.selected{background:#355b87;color:#fff}
 nav{
- position:fixed;bottom:0;left:0;right:0;
- background:#111a2b;border-top:1px solid #28344b;
+ position:fixed;bottom:0;left:0;right:0;z-index:10;
  display:flex;justify-content:space-around;
- padding:12px 3px calc(12px + env(safe-area-inset-bottom));
- z-index:10;
+ background:#111a2b;border-top:1px solid var(--line);
+ padding:10px 2px calc(10px + env(safe-area-inset-bottom));
 }
 nav button{
- background:transparent;color:#8292ae;
- margin:0;padding:5px 3px;font-size:11px;
- display:flex;flex-direction:column;gap:5px;
- align-items:center;
+ background:transparent;color:#8fa1bc;padding:5px 2px;
+ display:flex;flex-direction:column;align-items:center;
+ gap:4px;font-size:10px;flex:1;
 }
-nav button.active{color:#5ce1ff}
-nav b{font-size:20px}
+nav button b{font-size:20px}
+nav button.active{color:var(--blue)}
+.rank{
+ display:flex;align-items:center;gap:12px;
+ padding:13px;border-radius:13px;background:#1a263b;margin-top:9px;
+}
+.rank-icon{font-size:25px}
+.rank.current{border:1px solid var(--blue)}
+.prize{display:flex;align-items:center;gap:12px}
+.prize-icon{font-size:30px}
 input{
- width:100%;padding:13px;border-radius:10px;
- border:1px solid #35445f;background:#0d1525;
- color:white;margin-top:12px;
+ width:100%;padding:12px;background:#0e1728;
+ border:1px solid var(--line);border-radius:10px;color:white;
+ margin:10px 0;
 }
-.muted{color:#9cabc4;font-size:13px}
+.notice{background:#252d43;border-radius:12px;padding:12px;color:#c1cee2;font-size:11px;line-height:1.5}
+footer{text-align:center;color:#65748c;font-size:10px;padding:20px}
 </style>
 </head>
 <body>
 
 <header>
- <div class="logo">COMUNIDAD <span>GAMER</span></div>
- <div class="coins">🪙 <span id="coins">100</span></div>
+ <div class="brand">COMUNIDAD <span>GAMER</span></div>
+ <div class="balance">🪙 <span id="coins">100</span></div>
 </header>
 
 <main>
 
+<!-- INICIO -->
 <section class="page active" id="inicio">
- <div class="welcome">
-  <h2>¡Bienvenido, jugador! 🎮</h2>
-  <p>Tu comunidad, tus desafíos y tus recompensas.</p>
+ <div class="hero">
+  <div class="eyebrow">TU ZONA GAMER</div>
+  <h1>¡Bienvenido!</h1>
+  <p>Completá misiones, ganá experiencia y desbloqueá recompensas.</p>
  </div>
 
- <div class="profile">
-  <div class="avatar">👾</div>
-  <div>
-   <h3 id="playerName">Jugador</h3>
-   <p class="muted">Miembro de la comunidad</p>
+ <div class="levelbox">
+  <div class="row">
+   <div class="row">
+    <div class="level-icon">⚔️</div>
+    <div>
+     <h3 id="homeName">Jugador</h3>
+     <p class="muted">Rango <span id="homeLevel">1</span> · Principiante</p>
+    </div>
+   </div>
+   <strong style="color:var(--blue)" id="levelPercent">0%</strong>
+  </div>
+  <div class="progress"><div id="levelBar"></div></div>
+  <div class="row">
+   <span class="muted"><span id="xp">0</span> XP</span>
+   <span class="muted">Próximo nivel: <span id="nextXP">100</span> XP</span>
   </div>
  </div>
 
- <h3 class="section-title">Tu actividad</h3>
- <div class="grid">
-  <div class="card stat">
-   <strong id="statCoins">100</strong>
-   <span>Fichas disponibles</span>
-  </div>
-  <div class="card stat">
-   <strong>1</strong>
-   <span>Nivel actual</span>
-  </div>
+ <div class="stats">
+  <div class="stat"><strong id="homeCoins">100</strong><span>🪙 Fichas</span></div>
+  <div class="stat"><strong id="homeTasks">0</strong><span>🎯 Tareas completadas</span></div>
  </div>
 
- <h3 class="section-title">Explorá la comunidad</h3>
- <div class="card">
-  <h3>🏆 Misiones diarias</h3>
-  <p>Completá actividades y ganá fichas.</p>
-  <button onclick="showPage('misiones')">Ver misiones</button>
+ <div class="section-head"><h3>⚡ Accesos rápidos</h3></div>
+ <div class="panel task">
+  <div class="task-icon">🎯</div>
+  <div class="task-info"><h3>Tareas disponibles</h3><p class="muted">Hay desafíos esperándote.</p></div>
+  <button onclick="go('tareas')">Entrar</button>
  </div>
- <div class="card">
-  <h3>👥 Comunidad gamer</h3>
-  <p>Conocé jugadores y participá en actividades.</p>
-  <button onclick="showPage('comunidad')">Entrar</button>
+ <div class="panel task">
+  <div class="task-icon">🎁</div>
+  <div class="task-info"><h3>Tienda de premios</h3><p class="muted">Canjeá tus fichas.</p></div>
+  <button onclick="go('premios')">Ver</button>
+ </div>
+ <div class="panel">
+  <div class="row"><h3>🏆 Tu progreso</h3><span class="tag">En crecimiento</span></div>
+  <p class="muted" style="margin-top:8px">Cada tarea te acerca al próximo nivel. ¡No abandones tu aventura!</p>
  </div>
 </section>
 
-<section class="page" id="misiones">
- <h2>🎯 Misiones</h2>
- <p class="muted" style="margin-top:8px">Completá desafíos y conseguí fichas.</p>
-
- <h3 class="section-title">Actividades disponibles</h3>
-
- <div class="card task">
-  <div>
-   <h3>🎮 Visitar la comunidad</h3>
-   <p>Explorá nuestra sección comunitaria.</p>
-   <div class="reward">+20 fichas</div>
-  </div>
-  <button onclick="claim(this,20)">Reclamar</button>
+<!-- TAREAS -->
+<section class="page" id="tareas">
+ <h2>Centro de misiones</h2>
+ <p class="muted">Elegí tus actividades y conseguí recompensas.</p>
+ <div class="tabs">
+  <button class="selected" onclick="filterTasks('daily',this)">📅 Diarias</button>
+  <button onclick="filterTasks('clan',this)">🛡️ Del clan</button>
+  <button onclick="filterTasks('video',this)">▶ Videos</button>
  </div>
-
- <div class="card task">
-  <div>
-   <h3>👤 Completar perfil</h3>
-   <p>Configurá tu nombre de jugador.</p>
-   <div class="reward">+30 fichas</div>
-  </div>
-  <button onclick="claim(this,30)">Reclamar</button>
- </div>
-
- <div class="card task">
-  <div>
-   <h3>🌟 Explorar misiones</h3>
-   <p>Conocé las actividades disponibles.</p>
-   <div class="reward">+10 fichas</div>
-  </div>
-  <button onclick="claim(this,10)">Reclamar</button>
+ <div id="taskList"></div>
+ <div class="notice" style="margin-top:14px">
+  Las recompensas de esta versión son de demostración. La verificación automática y los anuncios se conectarán al backend en próximas etapas.
  </div>
 </section>
 
-<section class="page" id="comunidad">
- <h2>👥 Comunidad</h2>
- <p class="muted" style="margin-top:8px">Un espacio para los jugadores.</p>
-
- <h3 class="section-title">Zona gamer</h3>
- <div class="card">
-  <h3>🔥 Free Fire</h3>
-  <p>Encontrá jugadores, compartí partidas y organizá equipos.</p>
-  <button onclick="alert('Próximamente: zona de Free Fire')">Explorar</button>
+<!-- NIVELES -->
+<section class="page" id="niveles">
+ <h2>⚡ Niveles y rangos</h2>
+ <p class="muted">Jugá, completá tareas y convertite en una leyenda.</p>
+ <div class="levelbox" style="margin-top:18px">
+  <div class="row">
+   <div><p class="eyebrow">TU RANGO ACTUAL</p><h2 style="margin-top:7px">Nivel <span id="levelBig">1</span></h2></div>
+   <div class="level-icon">🏆</div>
+  </div>
+  <div class="progress"><div id="levelBar2"></div></div>
+  <p class="muted"><span id="xp2">0</span> XP acumulados</p>
  </div>
- <div class="card">
-  <h3>🏆 Torneos</h3>
-  <p>Próximamente podrás participar en competencias.</p>
- </div>
- <div class="card">
-  <h3>💬 Chat comunitario</h3>
-  <p>Un espacio para conversar con otros miembros.</p>
- </div>
+ <h3 class="section" >Escalera de rangos</h3>
+ <div id="rankList"></div>
+ <div class="notice" style="margin-top:15px">Los rangos y sus premios podrán configurarse desde el panel administrativo.</div>
 </section>
 
-<section class="page" id="referidos">
- <h2>🤝 Invitá amigos</h2>
- <div class="card" style="margin-top:20px">
-  <h3>¡Crezcamos juntos!</h3>
-  <p>Invitá a tus amigos a unirse a la comunidad.</p>
-  <div class="reward" style="margin-top:15px">Recompensa de demostración: 50 fichas</div>
-  <button onclick="alert('El sistema de invitaciones se conectará con Telegram próximamente')">Invitar amigos</button>
- </div>
-</section>
-
+<!-- PREMIOS -->
 <section class="page" id="premios">
- <h2>🎁 Recompensas</h2>
- <p class="muted" style="margin-top:8px">Utilizá tus fichas para canjear premios.</p>
-
- <div class="card" style="margin-top:20px">
-  <h3>🎮 Premio gamer</h3>
-  <p>Un premio de demostración.</p>
-  <div class="reward">500 fichas</div>
-  <button onclick="redeem(500,'Premio gamer')">Canjear</button>
+ <h2>🎁 Tienda de recompensas</h2>
+ <p class="muted">Canjeá tus fichas por premios.</p>
+ <div class="panel" style="margin-top:18px">
+  <div class="row"><span class="muted">TU SALDO</span><strong style="color:var(--gold)">🪙 <span id="shopCoins">100</span></strong></div>
  </div>
-
- <div class="card">
-  <h3>💎 Premio especial</h3>
-  <p>Una recompensa especial de la comunidad.</p>
-  <div class="reward">1000 fichas</div>
-  <button onclick="redeem(1000,'Premio especial')">Canjear</button>
- </div>
- <p class="muted">Los canjes son demostrativos. Los premios reales se habilitarán cuando configuremos el sistema.</p>
+ <div id="prizeList"></div>
+ <div class="notice">Los premios son ejemplos. Los canjes reales se habilitarán cuando configuremos el inventario y el sistema de entregas.</div>
 </section>
 
+<!-- PERFIL -->
 <section class="page" id="perfil">
  <h2>👤 Mi perfil</h2>
- <div class="card" style="margin-top:20px">
-  <div class="avatar">👾</div>
-  <h3 style="margin-top:12px" id="profileName">Jugador</h3>
+ <div class="panel" style="margin-top:18px;text-align:center">
+  <div class="level-icon" style="margin:auto;font-size:30px">👾</div>
+  <h2 id="profileName" style="margin-top:12px">Jugador</h2>
   <p class="muted">Miembro de Comunidad Gamer</p>
-  <input id="nameInput" placeholder="Tu nombre de jugador">
+  <input id="nameInput" maxlength="24" placeholder="Nombre de jugador">
   <button onclick="saveName()">Guardar nombre</button>
  </div>
- <div class="card">
-  <h3>🪙 Mi saldo</h3>
-  <div class="reward" id="profileCoins">100 fichas</div>
+ <div class="stats">
+  <div class="stat"><strong id="profileXP">0</strong><span>Experiencia</span></div>
+  <div class="stat"><strong id="profileTasks">0</strong><span>Tareas realizadas</span></div>
+ </div>
+ <div class="panel" style="margin-top:14px">
+  <h3>🛡️ Información de cuenta</h3>
+  <p class="muted" style="margin-top:8px">Tu perfil se conectará con tu cuenta de Telegram y Firebase.</p>
  </div>
 </section>
 
 </main>
 
 <nav>
- <button class="active" onclick="showPage('inicio',this)"><b>⌂</b>Inicio</button>
- <button onclick="showPage('misiones',this)"><b>🎯</b>Misiones</button>
- <button onclick="showPage('comunidad',this)"><b>👥</b>Comunidad</button>
- <button onclick="showPage('referidos',this)"><b>🤝</b>Referidos</button>
- <button onclick="showPage('premios',this)"><b>🎁</b>Premios</button>
- <button onclick="showPage('perfil',this)"><b>👤</b>Perfil</button>
+ <button class="active" onclick="go('inicio',this)"><b>⌂</b>Inicio</button>
+ <button onclick="go('tareas',this)"><b>🎯</b>Tareas</button>
+ <button onclick="go('niveles',this)"><b>⚡</b>Niveles</button>
+ <button onclick="go('premios',this)"><b>🎁</b>Premios</button>
+ <button onclick="go('perfil',this)"><b>👤</b>Perfil</button>
 </nav>
 
-<script>
-let balance = 100;
+<footer>COMUNIDAD GAMER · TU AVENTURA COMIENZA AQUÍ</footer>
 
-function updateBalance(){
- document.getElementById('coins').textContent=balance;
- document.getElementById('statCoins').textContent=balance;
- document.getElementById('profileCoins').textContent=balance+' fichas';
+<script>
+const tg=window.Telegram?.WebApp;
+if(tg){tg.ready();tg.expand();}
+
+let coins=100,xp=0,completed=0,player='Jugador';
+let currentFilter='daily';
+
+const tasks=[
+ {id:'d1',type:'daily',icon:'📅',name:'Recompensa diaria',desc:'Registrá tu actividad del día.',coins:20,xp:10},
+ {id:'d2',type:'daily',icon:'🎯',name:'Desafío del día',desc:'Completá una actividad diaria.',coins:30,xp:20},
+ {id:'d3',type:'daily',icon:'⭐',name:'Jugador activo',desc:'Explorá las actividades del clan.',coins:15,xp:10},
+ {id:'c1',type:'clan',icon:'🛡️',name:'Actividad del clan',desc:'Participá en el desafío grupal.',coins:50,xp:35},
+ {id:'c2',type:'clan',icon:'🔥',name:'Desafío Free Fire',desc:'Completá el objetivo indicado por el clan.',coins:80,xp:50},
+ {id:'c3',type:'clan',icon:'🏆',name:'Evento especial',desc:'Participá en un evento del clan.',coins:100,xp:70},
+ {id:'v1',type:'video',icon:'▶️',name:'Video publicitario',desc:'Disponible cuando se integre un anuncio recompensado compatible.',coins:10,xp:5}
+];
+
+const prizes=[
+ {icon:'💎',name:'Diamantes Free Fire',cost:500},
+ {icon:'🎮',name:'Premio gamer',cost:300},
+ {icon:'🏆',name:'Recompensa especial',cost:1000}
+];
+
+function level(){return Math.floor(xp/100)+1}
+function progress(){return xp%100}
+
+function update(){
+ document.getElementById('coins').textContent=coins;
+ document.getElementById('homeCoins').textContent=coins;
+ document.getElementById('shopCoins').textContent=coins;
+ document.getElementById('xp').textContent=xp;
+ document.getElementById('xp2').textContent=xp;
+ document.getElementById('profileXP').textContent=xp;
+ document.getElementById('homeLevel').textContent=level();
+ document.getElementById('levelBig').textContent=level();
+ document.getElementById('nextXP').textContent=level()*100;
+ document.getElementById('homeTasks').textContent=completed;
+ document.getElementById('profileTasks').textContent=completed;
+ document.getElementById('profileName').textContent=player;
+ document.getElementById('homeName').textContent=player;
+ let p=progress();
+ document.getElementById('levelPercent').textContent=p+'%';
+ document.getElementById('levelBar').style.width=p+'%';
+ document.getElementById('levelBar2').style.width=p+'%';
+ renderRanks();
 }
 
-function showPage(id,btn){
+function renderTasks(){
+ const list=document.getElementById('taskList');
+ list.innerHTML='';
+ tasks.filter(t=>t.type===currentFilter).forEach(t=>{
+  let done=localStorage.getItem('cg_'+t.id)==='yes';
+  let el=document.createElement('div');
+  el.className='panel task';
+  let buttonText=t.type==='video'?'Ver anuncio':done?'Completada ✓':'Completar';
+  el.innerHTML=`
+   <div class="task-icon">${t.icon}</div>
+   <div class="task-info">
+    <h3>${t.name}</h3><p class="muted">${t.desc}</p>
+    <div class="reward">🪙 ${t.coins} fichas · ⚡ ${t.xp} XP</div>
+   </div>
+   <button class="${done?'secondary':''}" ${done?'disabled':''}>${buttonText}</button>`;
+  el.querySelector('button').onclick=()=>{
+   if(t.type==='video'){
+    alert('Todavía no hay anuncios conectados. Integraremos Monetag y su validación antes de entregar fichas.');
+    return;
+   }
+   if(done)return;
+   if(!confirm('¿Simular la finalización de esta tarea?'))return;
+   localStorage.setItem('cg_'+t.id,'yes');
+   coins+=t.coins;xp+=t.xp;completed++;
+   update();renderTasks();
+  };
+  list.appendChild(el);
+ });
+}
+
+function filterTasks(type,btn){
+ currentFilter=type;
+ document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('selected'));
+ btn.classList.add('selected');
+ renderTasks();
+}
+
+function renderRanks(){
+ const names=['Principiante','Recluta','Guerrero','Élite','Leyenda'];
+ const icons=['🌱','⚔️','🛡️','🔥','👑'];
+ const current=level();
+ document.getElementById('rankList').innerHTML=names.map((n,i)=>{
+  let num=i+1;
+  return `<div class="rank ${current===num?'current':''}">
+   <div class="rank-icon">${icons[i]}</div>
+   <div style="flex:1"><h3>${n}</h3><p class="muted">Nivel ${num}</p></div>
+   <span class="tag">${current>num?'Desbloqueado':current===num?'Actual':'Bloqueado'}</span>
+  </div>`;
+ }).join('');
+}
+
+function renderPrizes(){
+ document.getElementById('prizeList').innerHTML=prizes.map((p,i)=>`
+ <div class="panel prize">
+  <div class="prize-icon">${p.icon}</div>
+  <div style="flex:1"><h3>${p.name}</h3><p class="reward">🪙 ${p.cost} fichas</p></div>
+  <button onclick="redeem(${i})">Canjear</button>
+ </div>`).join('');
+}
+
+function redeem(i){
+ const p=prizes[i];
+ if(coins<p.cost){alert('Todavía no tenés suficientes fichas.');return}
+ if(!confirm('¿Canjear '+p.name+' por '+p.cost+' fichas?'))return;
+ coins-=p.cost;update();
+ alert('Canje de demostración realizado.');
+}
+
+function go(id,btn){
  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
  document.getElementById(id).classList.add('active');
  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
- if(btn) btn.classList.add('active');
- else {
-  const names=['inicio','misiones','comunidad','referidos','premios','perfil'];
-  const buttons=document.querySelectorAll('nav button');
-  buttons[names.indexOf(id)]?.classList.add('active');
+ if(btn)btn.classList.add('active');
+ else{
+  const ids=['inicio','tareas','niveles','premios','perfil'];
+  document.querySelectorAll('nav button')[ids.indexOf(id)]?.classList.add('active');
  }
  window.scrollTo(0,0);
 }
 
-function claim(btn,amount){
- if(btn.disabled)return;
- balance+=amount;
- btn.disabled=true;
- btn.textContent='Completada ✓';
- updateBalance();
-}
-
-function redeem(amount,name){
- if(balance<amount){
-  alert('No tenés suficientes fichas.');
-  return;
- }
- if(confirm('¿Querés canjear '+amount+' fichas por '+name+'?')){
-  balance-=amount;
-  updateBalance();
-  alert('Canje de demostración realizado.');
- }
-}
-
 function saveName(){
- const name=document.getElementById('nameInput').value.trim();
- if(!name)return alert('Escribí un nombre.');
- document.getElementById('playerName').textContent=name;
- document.getElementById('profileName').textContent=name;
+ let value=document.getElementById('nameInput').value.trim();
+ if(!value)return alert('Escribí un nombre.');
+ player=value;update();
  alert('Nombre actualizado en esta demostración.');
 }
 
-const tg=window.Telegram?.WebApp;
-if(tg){
- tg.ready();
- tg.expand();
- if(tg.initDataUnsafe?.user){
-  const user=tg.initDataUnsafe.user;
-  const name=user.first_name||'Jugador';
-  document.getElementById('playerName').textContent=name;
-  document.getElementById('profileName').textContent=name;
- }
+if(tg?.initDataUnsafe?.user){
+ player=tg.initDataUnsafe.user.first_name||'Jugador';
 }
-updateBalance();
+renderTasks();renderPrizes();update();
 </script>
-
 </body>
 </html>
